@@ -44,3 +44,7 @@ document.querySelectorAll('.navs a').forEach((link) => {
 });
 
 
+[...document.querySelectorAll('*')]
+  .filter(el => el.scrollWidth > document.documentElement.clientWidth + 1)
+  .forEach(el => console.log(el.scrollWidth, el));
+  
