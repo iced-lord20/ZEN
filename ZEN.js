@@ -47,4 +47,8 @@ document.querySelectorAll('.navs a').forEach((link) => {
 [...document.querySelectorAll('*')]
   .filter(el => el.scrollWidth > document.documentElement.clientWidth + 1)
   .forEach(el => console.log(el.scrollWidth, el));
+<<<<<<< HEAD
   
+=======
+  
+>>>>>>> 7689b88c643641102ae932ceccc44cc68be9a5dd
