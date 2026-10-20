@@ -1,6 +1,7 @@
 const moon = document.querySelector('.moon');
 
 function toggleTheme() {
+	if (!moon) return;
 	const lightMode = document.body.classList.toggle('light-mode');
 	moon.setAttribute('aria-pressed', String(lightMode));
 	moon.setAttribute('aria-label', lightMode ? 'Switch to dark mode' : 'Switch to light mode');
@@ -17,14 +18,35 @@ if (moon) {
 	});
 }
 
+const nav = document.querySelector('nav');
 const menuToggle = document.querySelector('.menu-toggle');
 
-if (menuToggle) {
-	menuToggle.addEventListener('click', () => {
-		const nav = menuToggle.closest('nav');
-		const isOpen = nav.classList.toggle('nav-open');
-		menuToggle.setAttribute('aria-expanded', String(isOpen));
-		menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+function setMenu(open) {
+	if (!nav || !menuToggle) return;
+	nav.classList.toggle('nav-open', open);
+	menuToggle.setAttribute('aria-expanded', String(open));
+	menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+}
+
+if (nav && menuToggle) {
+	menuToggle.addEventListener('click', (event) => {
+		event.stopPropagation();
+		setMenu(!nav.classList.contains('nav-open'));
+	});
+
+	// Click outside the nav closes the menu
+	document.addEventListener('click', (event) => {
+		if (!nav.classList.contains('nav-open')) return;
+		if (nav.contains(event.target)) return;
+		setMenu(false);
+	});
+
+	// Escape closes the menu
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && nav.classList.contains('nav-open')) {
+			setMenu(false);
+			menuToggle.focus();
+		}
 	});
 }
 
@@ -39,16 +61,6 @@ document.querySelectorAll('.navs a').forEach((link) => {
 	}
 
 	link.addEventListener('click', () => {
-		menuToggle?.closest('nav')?.classList.remove('nav-open');
+		setMenu(false);
 	});
 });
-
-
-[...document.querySelectorAll('*')]
-  .filter(el => el.scrollWidth > document.documentElement.clientWidth + 1)
-  .forEach(el => console.log(el.scrollWidth, el));
-<<<<<<< HEAD
-  
-=======
-  
->>>>>>> 7689b88c643641102ae932ceccc44cc68be9a5dd
